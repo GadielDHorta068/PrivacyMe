@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     if (data != null) {
                         Uri selectedMediaUri = data.getData();
                         if (selectedMediaUri != null) {
-                            Toast.makeText(this, "Selected Media URI: " + selectedMediaUri.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Selected Media URI: " + selectedMediaUri, Toast.LENGTH_LONG).show();
                             metadataRemover.removeMetadata(selectedMediaUri);
                         } else {
                             Toast.makeText(this, "Failed to get the selected file", Toast.LENGTH_SHORT).show();

@@ -1,21 +1,15 @@
 package com.deneb.org;
 
 import static androidx.core.content.ContextCompat.startActivity;
-import static java.io.File.createTempFile;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
-
-import com.coremedia.iso.IsoFile;
-import com.coremedia.iso.boxes.MetaBox;
-import com.googlecode.mp4parser.FileDataSourceImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 
 public class MetadataRemover {
 
