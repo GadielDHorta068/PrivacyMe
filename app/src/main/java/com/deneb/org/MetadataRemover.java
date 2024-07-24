@@ -1,13 +1,16 @@
 package com.deneb.org;
 
+import static androidx.core.content.ContextCompat.startActivity;
 import static java.io.File.createTempFile;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.coremedia.iso.IsoFile;
@@ -95,7 +98,7 @@ public class MetadataRemover {
         // Guardar el archivo modificado en una nueva ubicación
         File newFile = saveFileToDCIM(tempFile, "image");
         if (newFile != null) {
-            Toast.makeText(context, "Metadata removed from image. New file saved at: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "New file saved at: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Failed to save modified image", Toast.LENGTH_SHORT).show();
         }
@@ -118,8 +121,9 @@ public class MetadataRemover {
     private File saveFileToDCIM(File sourceFile, String mediaType) {
         File dcimDirectory = new File(context.getExternalFilesDir(null), "DCIM");
         File appDirectory = new File(dcimDirectory, "PrivacyMe");
-        if (!appDirectory.exists()) {
-            appDirectory.mkdirs();
+        if (!appDirectory.exists() && !appDirectory.mkdirs()) {
+            Toast.makeText(context, "Failed to create directory", Toast.LENGTH_SHORT).show();
+            return null;
         }
 
         String fileName = "processed_" + System.currentTimeMillis();
@@ -137,13 +141,41 @@ public class MetadataRemover {
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
+
+            // Verificar el tamaño del archivo
+            if (newFile.length() == 0) {
+                Toast.makeText(context, "File is empty", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+
+            // Compartir el archivo
+            shareImage(newFile);
+
+
+            return newFile;
         } catch (IOException e) {
+            Toast.makeText(context, "Failed to save file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
             return null;
         }
-
-        return newFile;
     }
+
+    private void shareImage(File imageFile) {
+        Uri imageUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        try {
+            startActivity(context, Intent.createChooser(shareIntent, "Share image using"), null);
+        } catch (Exception e) {
+            Toast.makeText(context, "No app found to share image", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        closeApp();
+    }
+
 
     private void closeQuietly(AutoCloseable closeable) {
         if (closeable != null) {
@@ -154,5 +186,10 @@ public class MetadataRemover {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void closeApp() {
+        // Opcional: cierra la aplicación si no hay más actividades
+        System.exit(0);
     }
 }
