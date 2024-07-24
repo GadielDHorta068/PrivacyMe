@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PrivacyMe</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="media_item_description">Descripción del archivo multimedia.</string>
+</resources>
