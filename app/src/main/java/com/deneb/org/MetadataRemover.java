@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 
 public class MetadataRemover {
 
@@ -58,12 +59,11 @@ public class MetadataRemover {
     }
 
     private void removeImageMetadata(Uri imageUri) throws IOException {
- //       Toast.makeText(context, "Processing image metadata", Toast.LENGTH_SHORT).show();
 
         // Crear un archivo temporal para almacenar la imagen modificada
         File tempFile = createTempFile();
         try (InputStream inputStream = contentResolver.openInputStream(imageUri);
-             OutputStream outputStream = new FileOutputStream(tempFile)) {
+             OutputStream outputStream = Files.newOutputStream(tempFile.toPath())) {
             if (inputStream == null) {
                 Toast.makeText(context, "Failed to open image input stream", Toast.LENGTH_SHORT).show();
                 return;
@@ -81,7 +81,7 @@ public class MetadataRemover {
             throw e;
         }
 
-        ExifInterface exifInterface = null;
+        ExifInterface exifInterface;
         try {
             exifInterface = new ExifInterface(tempFile.getAbsolutePath());
             exifInterface.setAttribute(ExifInterface.TAG_GPS_LATITUDE, null);
@@ -99,13 +99,9 @@ public class MetadataRemover {
 
         // Guardar el archivo modificado en una nueva ubicación
         File newFile = saveFileToDCIM(tempFile, "image");
-        if (newFile != null) {
-  //          Toast.makeText(context, "New file saved at: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-        } else {
+        if (newFile == null) {
             Toast.makeText(context, "Failed to save modified image", Toast.LENGTH_SHORT).show();
         }
-
-        // Eliminar el archivo temporal
         tempFile.delete();
     }
 
@@ -144,8 +140,8 @@ public class MetadataRemover {
         }
 
         File newFile = new File(appDirectory, fileName);
-        try (InputStream inputStream = new FileInputStream(sourceFile);
-             OutputStream outputStream = new FileOutputStream(newFile)) {
+        try (InputStream inputStream = Files.newInputStream(sourceFile.toPath());
+             OutputStream outputStream = Files.newOutputStream(newFile.toPath())) {
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {

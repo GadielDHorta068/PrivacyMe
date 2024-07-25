@@ -28,7 +28,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 
-@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PERMISSIONS = 100;
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private MetadataRemover metadataRemover;
-    private AdView mAdView;
     private InterstitialAd mInterstitialAd;
 
     private final ActivityResultLauncher<Intent> selectMediaLauncher =
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, initializationStatus -> {});
 
         // Find AdView as defined in XML
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
 
         // Create an ad request
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                         // Ad failed to show callback
                         Toast.makeText(MainActivity.this, "Ad Failed to Show: " + adError.getMessage(), Toast.LENGTH_SHORT).show();
                         shareImage();
