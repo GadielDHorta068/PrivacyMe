@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadInterstitialAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+        InterstitialAd.load(this, "ca-app-pub-2575226536979588/4796897340", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 mInterstitialAd = interstitialAd;
@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         if (mInterstitialAd != null) {
             mInterstitialAd.show(this);
             loadInterstitialAd();
-            Toast.makeText(this, "Mostrar anuncio", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Interstitial ad is not ready yet", Toast.LENGTH_SHORT).show();
             shareImage();
