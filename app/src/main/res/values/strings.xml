@@ -2,4 +2,5 @@
     <string name="app_name">PrivacyMe</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="media_item_description">Descripción del archivo multimedia.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string> <!-- Example ad unit ID -->
 </resources>

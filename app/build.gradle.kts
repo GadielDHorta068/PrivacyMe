@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.deneb.org"
-        minSdk = 33
+        minSdk = 32
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -71,7 +71,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    implementation(libs.play.services.ads.v2320)
     implementation(libs.glide)
+
 
 }
