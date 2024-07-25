@@ -157,9 +157,10 @@ public class MetadataRemover {
                 Toast.makeText(context, "File is empty", Toast.LENGTH_SHORT).show();
                 return null;
             }
-            mainActivity.showInterstitialAd();
+
             // Compartir el archivo
             shareImage(newFile);
+            mainActivity.showInterstitialAd();
 
 
             return newFile;
