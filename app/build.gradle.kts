@@ -73,6 +73,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.play.services.ads.v2320)
     implementation(libs.glide)
-
+    implementation(libs.material.v190)
 
 }

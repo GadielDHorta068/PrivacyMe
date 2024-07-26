@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    xmlns:app="http://schemas.android.com/tools">
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -12,25 +13,38 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-2575226536979588/6109979017" />
+        ads:adUnitId="ca-app-pub-2575226536979588/6109979017"
+        android:layout_marginBottom="16dp" />
 
     <!-- Botón para elegir multimedia -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_select_media"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:text="Choose Media"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_color"
+        app:cornerRadius="10dp"
 
-        android:text="Choose Media" />
+        app:iconTint="@color/white"
+        app:iconPadding="8dp" />
 
     <!-- Botón para salir -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_select_media"
         android:layout_centerHorizontal="true"
-        android:text="Exit" />
+        android:layout_marginTop="16dp"
+        android:text="Exit"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/secondary_color"
+        app:cornerRadius="10dp"
+        app:iconTint="@color/white"
+        app:iconPadding="8dp" />
 
 </RelativeLayout>
