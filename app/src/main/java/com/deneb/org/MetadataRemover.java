@@ -153,7 +153,6 @@ public class MetadataRemover {
         return File.createTempFile("temp_image", ".jpg", tempDir);
     }
 
-
     /**
      * Guarda un archivo en el directorio DCIM de la aplicación. (Arreglar esto, lo guarda en matusalem)
      * @param sourceFile Archivo a guardar
@@ -287,7 +286,6 @@ public class MetadataRemover {
         }
     }
 
-
     /**
      * Guarda un archivo en el mismo directorio que el original
      * @param sourceFile Archivo a guardar
@@ -330,7 +328,6 @@ public class MetadataRemover {
             return null;
         }
     }
-
 
     private void closeApp() {
         System.exit(0);

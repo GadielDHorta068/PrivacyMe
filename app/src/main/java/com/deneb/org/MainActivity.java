@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-
     private MetadataRemover metadataRemover;
     private InterstitialAd mInterstitialAd;
 
