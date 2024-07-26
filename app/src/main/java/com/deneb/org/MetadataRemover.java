@@ -26,18 +26,33 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 
+/**
+ * Clase para remover metadatos de archivos multimedia.
+ */
 public class MetadataRemover {
 
     private final ContentResolver contentResolver;
     private final Context context;
     private final MainActivity mainActivity;
 
+    /**
+     * Constructor
+     *
+     * @param contentResolver
+     * @param context
+     * @param mainActivity
+     */
     public MetadataRemover(ContentResolver contentResolver, Context context, MainActivity mainActivity) {
         this.contentResolver = contentResolver;
         this.context = context;
         this.mainActivity = mainActivity;
     }
 
+    /**
+     * Esta clase recibe una URI de un archivo multimedia y ejecuta el metodo corrrespondiente
+     * dependiendo de su tipo.
+     * @param mediaUri  Direccion URI del archivo a trabajar
+     */
     public void removeMetadata(Uri mediaUri) {
         String mimeType = contentResolver.getType(mediaUri);
         if (mimeType != null) {
@@ -58,6 +73,11 @@ public class MetadataRemover {
         }
     }
 
+    /**
+     * Este metodo remueve los metadatos de una imagen.
+     * @param imageUri Direccion URI de la imagen a trabajar
+     * @throws IOException  Excepcion en caso de que ocurra un error
+     */
     private void removeImageMetadata(Uri imageUri) throws IOException {
 
         // Crear un archivo temporal para almacenar la imagen modificada
@@ -105,6 +125,11 @@ public class MetadataRemover {
         tempFile.delete();
     }
 
+    /**
+     * De una URI devuelve la direccion del archivo(?
+     * @param uri
+     * @return
+     */
     private String getPathFromUri(Uri uri) {
         String[] projection = { MediaStore.Video.Media.DATA };
         try (Cursor cursor = contentResolver.query(uri, projection, null, null, null)) {
@@ -118,12 +143,23 @@ public class MetadataRemover {
         return null;
     }
 
+    /**
+     * Crea un archivo temporal para almacenar la imagen modificada.
+     * @return Archivo temporal y su direccion
+     * @throws IOException
+     */
     private File createTempFile() throws IOException {
         File tempDir = context.getCacheDir(); // Usar el directorio de caché de la aplicación
         return File.createTempFile("temp_image", ".jpg", tempDir);
     }
 
 
+    /**
+     * Guarda un archivo en el directorio DCIM de la aplicación. (Arreglar esto, lo guarda en matusalem)
+     * @param sourceFile Archivo a guardar
+     * @param mediaType Tipo de archivo (imagen o video)
+     * @return
+     */
     private File saveFileToDCIM(File sourceFile, String mediaType) {
         File dcimDirectory = new File(context.getExternalFilesDir(null), "DCIM");
         File appDirectory = new File(dcimDirectory, "PrivacyMe");
@@ -167,6 +203,11 @@ public class MetadataRemover {
         }
     }
 
+
+    /**
+     * Compartir imagen
+     * @param imageFile imagen a ser compartida
+     */
     private void shareImage(File imageFile) {
         Uri imageUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -181,6 +222,11 @@ public class MetadataRemover {
         }
         closeApp();
     }
+
+    /**
+     * Remover los metadatos de un video
+     * @param videoUri video a ser procesado
+     */
     private void removeVideoMetadata(Uri videoUri) throws IOException {
         FileDataSourceImpl dataSource = null;
         IsoFile isoFile = null;
@@ -242,6 +288,12 @@ public class MetadataRemover {
     }
 
 
+    /**
+     * Guarda un archivo en el mismo directorio que el original
+     * @param sourceFile Archivo a guardar
+     * @param mediaType Tipo de archivo (imagen o video)
+     * @return
+     */
     private File saveFileToSameDirectory(File sourceFile, String mediaType) {
         File sourceDirectory = sourceFile.getParentFile();
         if (sourceDirectory == null) {
@@ -284,7 +336,11 @@ public class MetadataRemover {
         System.exit(0);
     }
 
-
+    /**
+     * Otro metodo para compartir el archivo, usando en video
+     * @param mediaFile archivo
+     * @param mediaType tipo de archivo
+     */
     private void shareMedia(File mediaFile, String mediaType) {
         Uri mediaUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", mediaFile);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

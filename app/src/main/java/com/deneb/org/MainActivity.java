@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private MetadataRemover metadataRemover;
     private InterstitialAd mInterstitialAd;
 
+    // ActivityResultLauncher for selecting media
     private final ActivityResultLauncher<Intent> selectMediaLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    /**
+     * onCreate method
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
         setupButtons();
     }
 
-
+    /**
+     * Carga el anuncio de interstitial en la actividad
+     */
     private void loadInterstitialAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(this, "ca-app-pub-2575226536979588/4796897340", adRequest, new InterstitialAdLoadCallback() {
@@ -130,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Muestra el anuncio de interstitial
+     */
     void showInterstitialAd() {
         if (mInterstitialAd != null) {
             mInterstitialAd.show(this);
@@ -139,9 +150,20 @@ public class MainActivity extends AppCompatActivity {
             shareImage();
         }
     }
+
+    /**
+     * Compartir imagen
+     * Esto iba a ser usado pero luego la logica fue cambiada.
+     * Eliminar proximamente
+     */
     private void shareImage() {
-        // Tu lógica de compartir imagen aquí.
+        //lógica de compartir imagen aquí.
     }
+
+    /**
+     * Boolean que verifica tener todos los permisos necesarios
+     * @return Boolean
+     */
     private boolean hasPermissions() {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -151,6 +173,15 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This method is called when the user responds to the permission request.
+     * @param requestCode The request code passed in ""
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -164,10 +195,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Inicializa la aplicacion
+     */
     private void initializeApp() {
         metadataRemover = new MetadataRemover(getContentResolver(), this,this);
     }
 
+    /**
+     * Abre el selector de archivos para seleccionar una imagen o video
+     */
     private void launchMediaPicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("*/*");
@@ -175,6 +212,9 @@ public class MainActivity extends AppCompatActivity {
         selectMediaLauncher.launch(intent);
     }
 
+    /**
+     * Configura los botones de la actividad
+     */
     private void setupButtons() {
         Button selectMediaButton = findViewById(R.id.button_select_media);
         Button exitButton = findViewById(R.id.button_exit);
